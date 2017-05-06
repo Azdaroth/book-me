@@ -1,0 +1,41 @@
+{{#if changeset.isInvalid}}
+  <section data-test-signup-errors>
+    {{#each changeset.errors as |error|}}
+      <div class="alert alert-danger" role="alert">
+        {{error.validation}}
+      </div>
+    {{/each}}
+  </section>
+{{/if}}
+
+<form {{action "registerUser" on="submit"}}>
+  <div class="form-group">
+    <label for="signup-email">Email address</label>
+    {{input
+      data-test-signup-email-field
+      id="signup-email"
+      value=(mut changeset.email)
+      class="form-control"
+    }}
+  </div>
+  <div class="form-group">
+    <label for="signup-password">Password</label>
+    {{input
+      data-test-signup-password-field
+      id="signup-password"
+      value=(mut changeset.password)
+      class="form-control"
+    }}
+  </div>
+  <div class="form-group">
+    <label for="signup-password">Password Confirmation</label>
+    {{input
+      data-test-signup-password-confirmation-field
+      id="signup-passwordConfirmation"
+      value=(mut changeset.passwordConfirmation)
+      class="form-control"
+    }}
+  </div>
+  <button type="submit" class="btn btn-primary" data-test-signup-submit-btn>Submit</button>
+</form>
+
