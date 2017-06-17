@@ -2,9 +2,16 @@ import Ember from 'ember';
 
 const {
   set,
+  get,
+  getProperties,
+  inject: {
+    service,
+  }
 } = Ember;
 
 export default Ember.Route.extend({
+  session: service(),
+
   model() {
     return this.store.createRecord('user');
   },
@@ -17,7 +24,15 @@ export default Ember.Route.extend({
 
   actions: {
     registerUser(user) {
-      user.save();
+      user.save().then(() => {
+        const { email, password } = getProperties(user, 'email', 'password');
+
+        get(this, 'session').authenticate('authenticator:oauth2', email, password).then(() => {
+          this.transitionTo('admin');
+        }).catch((error) => {
+          user.addError('signup', error.message);
+        });
+      });
     },
   },
 });

@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('route:signup', 'Unit | Route | signup', {
+moduleFor('route:login', 'Unit | Route | login', {
   needs: ['service:session']
 });
 

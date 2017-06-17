@@ -1,29 +1,37 @@
+import Mirage from 'ember-cli-mirage';
+import ENV from 'book-me/config/environment';
+
+const {
+  Response,
+} = Mirage;
+
 export default function() {
   this.namespace = 'api';
 
   this.post('/users');
 
-  // These comments are here to help you get started. Feel free to delete them.
+  this.post('/oauth/token', (schema, request) => {
+    const match = request.requestBody.match(/password=([^&]*)/);
+    // example: [
+    //   "password=supersecretpassword123",
+    //   "supersecretpassword123",
+    //   index: 50,
+    //   input: "grant_type=password&username=azdaroth%40gmail.com&password=supersecretpassword123"
+    // ]
+    const password = match && match[1];
 
-  /*
-    Config (with defaults).
+    if (password !== ENV.validPasswordForLogin) {
+      return new Response(401, {}, { message: 'invalid credentials' });
+    } else {
+      return {
+        access_token: '123456789',
+        token_type: 'bearer',
+        user_id: '1',
+      };
+    }
+  });
 
-    Note: these only affect routes defined *after* them!
-  */
-
-  // this.urlPrefix = '';    // make this `http://localhost:8080`, for example, if your API is on a different server
-  // this.namespace = '';    // make this `/api`, for example, if your API is namespaced
-  // this.timing = 400;      // delay for each request, automatically set to 0 during testing
-
-  /*
-    Shorthand cheatsheet:
-
-    this.get('/posts');
-    this.post('/posts');
-    this.get('/posts/:id');
-    this.put('/posts/:id'); // or this.patch
-    this.del('/posts/:id');
-
-    http://www.ember-cli-mirage.com/docs/v0.3.x/shorthands/
-  */
+  this.post('/oauth/destroy', () => {
+    return new Response(204);
+  });
 }
