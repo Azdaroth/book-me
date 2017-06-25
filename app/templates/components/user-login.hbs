@@ -1,7 +1,7 @@
 <h2>Log in</h2>
 
 {{#if changeset.isInvalid}}
-  <section data-test-signup-errors>
+  <section data-test-login-errors>
     {{#each changeset.errors as |error|}}
       <div class="alert alert-danger" role="alert">
         {{error.validation}}

@@ -52,7 +52,7 @@ test('user cannot log in with invalid credentials and sees the error messages fr
 
   andThen(() => {
     assert.equal(currentPath(), 'login', 'should still be a login route');
-    assert.ok(testSelector('login-errors').length, 'errors should be displayed');
+    assert.ok(find(testSelector('login-errors')).length, 'errors should be displayed');
   });
 });
 
@@ -73,6 +73,6 @@ test('user cannot log in with invalid credentials and sees the error messages fr
 
   andThen(() => {
     assert.equal(currentPath(), 'login', 'should still be a login route');
-    assert.ok(testSelector('login-errors').length, 'errors should be displayed');
+    assert.ok(find(testSelector('login-errors')).length, 'errors should be displayed');
   });
 });

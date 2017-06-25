@@ -32,6 +32,10 @@ export default Ember.Route.extend({
         }).catch((error) => {
           user.addError('signup', error.message);
         });
+      }).catch(() => {
+        get(user._content, 'errors').forEach(({ attribute, message }) => {
+          user.pushErrors(attribute, message);
+        });
       });
     },
   },
