@@ -3,6 +3,7 @@ import { test } from 'qunit';
 import moduleForAcceptance from 'book-me/tests/helpers/module-for-acceptance';
 import testSelector from 'ember-test-selectors';
 import ENV from 'book-me/config/environment';
+import loginPage from 'book-me/tests/pages/login';
 
 const {
   validPasswordForLogin,
@@ -20,15 +21,13 @@ moduleForAcceptance('Acceptance | user login', {
 test('user can successfully log in and is redirected to /admin route', function(assert) {
   assert.expect(1);
 
-  visit('/');
-
-  click(testSelector('login-link'));
-
   andThen(() => {
-    fillIn(testSelector('login-email-field'), this.userEmail);
-    fillIn(testSelector('login-password-field'), validPasswordForLogin);
-
-    click(testSelector('login-submit-btn'));
+    loginPage
+      .visit()
+      .goTologin()
+      .email(this.userEmail)
+      .password(validPasswordForLogin)
+      .submit();
   });
 
   andThen(() => {
@@ -39,15 +38,13 @@ test('user can successfully log in and is redirected to /admin route', function(
 test('user cannot log in with invalid credentials and sees the error messages from client', function(assert) {
   assert.expect(2);
 
-  visit('/');
-
-  click(testSelector('login-link'));
-
   andThen(() => {
-    fillIn(testSelector('login-email-field'), '');
-    fillIn(testSelector('login-password-field'), '');
-
-    click(testSelector('login-submit-btn'));
+    loginPage
+      .visit()
+      .goTologin()
+      .email('')
+      .password('')
+      .submit();
   });
 
   andThen(() => {
@@ -60,15 +57,13 @@ test('user cannot log in with invalid credentials and sees the error messages fr
 test('user cannot log in with invalid credentials and sees the error messages from server', function(assert) {
   assert.expect(2);
 
-  visit('/');
-
-  click(testSelector('login-link'));
-
   andThen(() => {
-    fillIn(testSelector('login-email-field'), this.userEmail);
-    fillIn(testSelector('login-password-field'), 'invalidPassword');
-
-    click(testSelector('login-submit-btn'));
+    loginPage
+      .visit()
+      .goTologin()
+      .email(this.userEmail)
+      .password('invalidPassword')
+      .submit();
   });
 
   andThen(() => {

@@ -4,6 +4,7 @@ import moduleForAcceptance from 'book-me/tests/helpers/module-for-acceptance';
 import testSelector from 'ember-test-selectors';
 import ENV from 'book-me/config/environment';
 import Mirage from 'ember-cli-mirage';
+import signupPage from 'book-me/tests/pages/signup';
 
 const {
   validPasswordForLogin,
@@ -29,16 +30,14 @@ test('user can successfully sign up', function(assert) {
     return schema.users.create(attributes);
   });
 
-  visit('/');
-
-  click(testSelector('signup-link'));
-
   andThen(() => {
-    fillIn(testSelector('signup-email-field'), 'example@email.com');
-    fillIn(testSelector('signup-password-field'), validPasswordForLogin);
-    fillIn(testSelector('signup-password-confirmation-field'), validPasswordForLogin);
-
-    click(testSelector('signup-submit-btn'));
+    signupPage
+      .visit()
+      .goToSignup()
+      .email('example@email.com')
+      .password(validPasswordForLogin)
+      .passwordConfirmation(validPasswordForLogin)
+      .submit();
   });
 
   andThen(() => {
@@ -59,15 +58,13 @@ test('user cannot signup if there is an error', function(assert) {
     assert.notOk(true, 'request should not be performed');
   });
 
-  visit('/');
-
-  click(testSelector('signup-link'));
-
   andThen(() => {
-    fillIn(testSelector('signup-email-field'), 'example@email.com');
-    fillIn(testSelector('signup-password-field'), 'supersecretpassword123');
-
-    click(testSelector('signup-submit-btn'));
+    signupPage
+      .visit()
+      .goToSignup()
+      .email('example@email.com')
+      .password(validPasswordForLogin)
+      .submit();
   });
 
   andThen(() => {
@@ -78,16 +75,14 @@ test('user cannot signup if there is an error', function(assert) {
 test('user cannot signup if there is an error on server', function(assert) {
   assert.expect(1);
 
-  visit('/');
-
-  click(testSelector('signup-link'));
-
   andThen(() => {
-    fillIn(testSelector('signup-email-field'), 'example@email.com');
-    fillIn(testSelector('signup-password-field'), 'invalidPassword');
-    fillIn(testSelector('signup-password-confirmation-field'), 'invalidPassword');
-
-    click(testSelector('signup-submit-btn'));
+    signupPage
+      .visit()
+      .goToSignup()
+      .email('example@email.com')
+      .password('invalidPassword')
+      .passwordConfirmation('invalidPassword')
+      .submit();
   });
 
   andThen(() => {
@@ -112,16 +107,14 @@ test('user cannot signup if there is an error on server when creating a user', f
     return new Response(422, {}, errors);
   });
 
-  visit('/');
-
-  click(testSelector('signup-link'));
-
   andThen(() => {
-    fillIn(testSelector('signup-email-field'), 'taken@email.com');
-    fillIn(testSelector('signup-password-field'), validPasswordForLogin);
-    fillIn(testSelector('signup-password-confirmation-field'), validPasswordForLogin);
-
-    click(testSelector('signup-submit-btn'));
+    signupPage
+      .visit()
+      .goToSignup()
+      .email('example@email.com')
+      .password(validPasswordForLogin)
+      .passwordConfirmation(validPasswordForLogin)
+      .submit();
   });
 
   andThen(() => {
