@@ -2,27 +2,29 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'book-me/tests/helpers/module-for-acceptance';
 import testSelector from 'ember-test-selectors';
-import ENV from 'book-me/config/environment';
 import Mirage from 'ember-cli-mirage';
 import signupPage from 'book-me/tests/pages/signup';
-
-const {
-  validPasswordForLogin,
-} = ENV;
 
 const {
   Response,
 } = Mirage;
 
-moduleForAcceptance('Acceptance | sign in sign up');
+moduleForAcceptance('Acceptance | sign in sign up', {
+  beforeEach() {
+    this.email = 'example@email.com';
+    this.password = 'password123';
+  }
+});
 test('user can successfully sign up', function(assert) {
   assert.expect(3);
+
+  const { email, password } = this;
 
   server.post('/users', function(schema)  {
     const attributes = this.normalizedRequestAttrs();
     const expectedAttributes = {
-      email: 'example@email.com',
-      password: validPasswordForLogin,
+      email: email,
+      password: password,
     };
 
     assert.deepEqual(attributes, expectedAttributes, "attributes don't match the expected ones");
@@ -34,9 +36,9 @@ test('user can successfully sign up', function(assert) {
     signupPage
       .visit()
       .goToSignup()
-      .email('example@email.com')
-      .password(validPasswordForLogin)
-      .passwordConfirmation(validPasswordForLogin)
+      .email(email)
+      .password(password)
+      .passwordConfirmation(password)
       .submit();
   });
 
@@ -54,6 +56,8 @@ test('user can successfully sign up', function(assert) {
 test('user cannot signup if there is an error', function(assert) {
   assert.expect(1);
 
+  const { email, password } = this;
+
   server.post('/users', () => {
     assert.notOk(true, 'request should not be performed');
   });
@@ -62,8 +66,8 @@ test('user cannot signup if there is an error', function(assert) {
     signupPage
       .visit()
       .goToSignup()
-      .email('example@email.com')
-      .password(validPasswordForLogin)
+      .email(email)
+      .password(password)
       .submit();
   });
 
@@ -72,16 +76,22 @@ test('user cannot signup if there is an error', function(assert) {
   });
 });
 
-test('user cannot signup if there is an error on server', function(assert) {
+test('user cannot signup if there is an error on server when fetching a token', function(assert) {
   assert.expect(1);
+
+  const { email, password } = this;
+
+  server.post('/oauth/token', () => {
+    return new Response(401, {}, { message: 'invalid credentials' });
+  });
 
   andThen(() => {
     signupPage
       .visit()
       .goToSignup()
-      .email('example@email.com')
-      .password('invalidPassword')
-      .passwordConfirmation('invalidPassword')
+      .email(email)
+      .password(password)
+      .passwordConfirmation(password)
       .submit();
   });
 
@@ -92,6 +102,8 @@ test('user cannot signup if there is an error on server', function(assert) {
 
 test('user cannot signup if there is an error on server when creating a user', function(assert) {
   assert.expect(1);
+
+  const { email, password } = this;
 
   server.post('/users', () => {
     const errors = {
@@ -111,9 +123,9 @@ test('user cannot signup if there is an error on server when creating a user', f
     signupPage
       .visit()
       .goToSignup()
-      .email('example@email.com')
-      .password(validPasswordForLogin)
-      .passwordConfirmation(validPasswordForLogin)
+      .email(email)
+      .password(password)
+      .passwordConfirmation(password)
       .submit();
   });
 

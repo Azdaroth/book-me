@@ -2,31 +2,30 @@
 import { test } from 'qunit';
 import moduleForAcceptance from 'book-me/tests/helpers/module-for-acceptance';
 import testSelector from 'ember-test-selectors';
-import ENV from 'book-me/config/environment';
 import loginPage from 'book-me/tests/pages/login';
-
-const {
-  validPasswordForLogin,
-} = ENV;
 
 moduleForAcceptance('Acceptance | user login', {
   beforeEach() {
-    const userEmail = 'examile@email.com';
+    const email = 'example@email.com';
+    const password = 'password123';
 
-    this.userEmail = userEmail;
-    this.user = server.create('user', { email: userEmail, password: validPasswordForLogin })
+    this.email = email;
+    this.password = password;
+    this.user = server.create('user', { email, password, });
   }
 });
 
 test('user can successfully log in and is redirected to /admin route', function(assert) {
   assert.expect(1);
 
+  const { email, password } = this;
+
   andThen(() => {
     loginPage
       .visit()
       .goTologin()
-      .email(this.userEmail)
-      .password(validPasswordForLogin)
+      .email(email)
+      .password(password)
       .submit();
   });
 
@@ -53,7 +52,6 @@ test('user cannot log in with invalid credentials and sees the error messages fr
   });
 });
 
-
 test('user cannot log in with invalid credentials and sees the error messages from server', function(assert) {
   assert.expect(2);
 
@@ -61,7 +59,7 @@ test('user cannot log in with invalid credentials and sees the error messages fr
     loginPage
       .visit()
       .goTologin()
-      .email(this.userEmail)
+      .email(this.email)
       .password('invalidPassword')
       .submit();
   });
