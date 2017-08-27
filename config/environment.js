@@ -56,5 +56,9 @@ module.exports = function(environment) {
     'media-src': "'self'"
   };
 
+  ENV['ember-cli-mirage'] = {
+    discoverEmberDataModels: true
+  };
+
   return ENV;
 };

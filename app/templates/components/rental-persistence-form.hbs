@@ -1,0 +1,34 @@
+{{#if changeset.isInvalid}}
+  <section data-test-rental-errors>
+    {{#each changeset.errors as |error|}}
+      <div class="alert alert-danger" role="alert">
+        {{error.validation}}
+      </div>
+    {{/each}}
+  </section>
+{{/if}}
+
+<form {{action "persistRental" on="submit"}}>
+  <div class="form-group">
+    <label for="rental-name">Name</label>
+    {{input
+      data-test-rental-name
+      id="rental-name"
+      value=(mut changeset.name)
+      class="form-control"
+    }}
+  </div>
+  <div class="form-group">
+    <label for="rental-dailyRate">Daily Rate</label>
+    {{input
+      data-test-rental-daily-rate
+      id="rental-daily-rate"
+      value=(mut changeset.dailyRate)
+      class="form-control"
+      type="integer"
+    }}
+  </div>
+
+  {{yield}}
+
+</form>

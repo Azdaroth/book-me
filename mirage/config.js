@@ -37,4 +37,6 @@ export default function() {
   this.post('/oauth/destroy', () => {
     return new Response(204);
   });
+
+  this.resource('rentals');
 }

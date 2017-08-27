@@ -15,8 +15,8 @@ moduleForAcceptance('Acceptance | user login', {
   }
 });
 
-test('user can successfully log in and is redirected to /admin route', function(assert) {
-  assert.expect(1);
+test('user can successfully log in and is redirected to /admin route and is able to logout afterwards', function(assert) {
+  assert.expect(4);
 
   const { email, password } = this;
 
@@ -31,6 +31,14 @@ test('user can successfully log in and is redirected to /admin route', function(
 
   andThen(() => {
     assert.equal(currentPath(), 'admin', 'should be an admin route');
+    assert.notOk(find(testSelector('signup-link')).length, 'signup button should not be displayed');
+    assert.notOk(find(testSelector('login-link')).length, 'login button should not be displayed');
+  });
+
+  click(testSelector('logout-link'));
+
+  andThen(() => {
+    assert.equal(currentPath(), 'index', 'should be an application route');
   });
 });
 

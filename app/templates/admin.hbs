@@ -1,1 +1,30 @@
 <h2>Admin</h2>
+
+{{#link-to 'rentals.new' data-test-add-rental class='btn btn-primary'}}
+  Add rental
+{{/link-to}}
+
+<table class='table table-border'>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Daily Rate</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each rentals as |rental|}}
+      <tr data-test-rental-row>
+        <td>{{rental.name}}</td>
+        <td>{{rental.dailyRate}}</td>
+        <td>
+          {{#link-to 'rental.edit' rental data-test-edit-rental class='btn btn-primary'}}
+            Edit
+          {{/link-to}}
+
+          {{delete-rental-button rental=rental}}
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

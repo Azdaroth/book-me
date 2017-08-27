@@ -16,8 +16,12 @@
     </div>
     <div class="collapse navbar-collapse navbar-top-collapse">
       <div class="navbar-right">
-        {{link-to "Sign up" "signup" data-test-signup-link class="btn btn-primary navbar-btn"}}
-        {{link-to "Login" "login" data-test-login-link class="btn btn-primary navbar-btn"}}
+        {{#if session.isAuthenticated}}
+          <a {{action (route-action 'logOut')}} data-test-logout-link class="btn btn-primary navbar-btn">Logout</a>
+        {{else}}
+          {{link-to "Sign up" "signup" data-test-signup-link class="btn btn-primary navbar-btn"}}
+          {{link-to "Login" "login" data-test-login-link class="btn btn-primary navbar-btn"}}
+        {{/if}}
       </div>
     </div>
   </div>
@@ -27,3 +31,5 @@
     {{outlet}}
   </div>
 </section>
+
+{{ember-notify messageStyle='bootstrap'}}
