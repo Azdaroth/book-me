@@ -1,0 +1,34 @@
+<h2>{{rental.name}}</h2>
+
+<table class='table table-border'>
+  <thead>
+    <tr>
+      <th>Begins At</th>
+      <th>Finishes At</th>
+      <th>Length of Stay</th>
+      <th>Client Email</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each rental.bookings as |booking|}}
+      <tr data-test-booking-row>
+        <td>{{booking.beginsAt}}</td>
+        <td>{{booking.finishesAt}}</td>
+        <td>{{booking.lengthOfStay}}</td>
+        <td>{{booking.clientEmail}}</td>
+        <td>{{booking.price}}</td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+{{#power-calendar-range
+  data-test-new-booking-calendar
+  selected=range
+  onSelect=(action 'selectRange' value='moment') as |calendar|}}
+    {{calendar.nav}}
+    {{calendar.days}}
+{{/power-calendar-range}}
+
+{{outlet}}

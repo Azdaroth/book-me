@@ -1,0 +1,12 @@
+{{#modal-dialog targetAttachment='center' translucentOverlay=true}}
+  <h3>Create booking</h3>
+
+  {{#if rental.bookings.isSettled}}
+    {{create-booking-form
+      booking=booking
+      rentalBookings=rental.bookings
+      onCreateBooking=(route-action 'createBooking')
+      onCancelCreation=(route-action 'closeModal')
+    }}
+  {{/if}}
+{{/modal-dialog}}

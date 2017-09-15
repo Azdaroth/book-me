@@ -39,4 +39,5 @@ export default function() {
   });
 
   this.resource('rentals');
+  this.resource('bookings');
 }

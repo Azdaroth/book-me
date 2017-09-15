@@ -1,12 +1,22 @@
 import { moduleForModel, test } from 'ember-qunit';
+import Ember from 'ember';
+
+const {
+  get,
+} = Ember;
 
 moduleForModel('rental', 'Unit | Model | rental', {
-  // Specify the other units that are required for this test.
-  needs: []
 });
 
-test('it exists', function(assert) {
-  let model = this.subject();
-  // let store = this.store();
-  assert.ok(!!model);
+test('defaultArrivalHour returns 14', function(assert) {
+  const model = this.subject();
+
+  assert.equal(get(model, 'defaultArrivalHour'), 14);
+});
+
+
+test('defaultDepartureHour returns 10', function(assert) {
+  const model = this.subject();
+
+  assert.equal(get(model, 'defaultDepartureHour'), 10);
 });

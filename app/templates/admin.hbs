@@ -15,11 +15,15 @@
   <tbody>
     {{#each rentals as |rental|}}
       <tr data-test-rental-row>
-        <td>{{rental.name}}</td>
+        <td>{{link-to rental.name "rental.show" rental}}</td>
         <td>{{rental.dailyRate}}</td>
         <td>
           {{#link-to 'rental.edit' rental data-test-edit-rental class='btn btn-primary'}}
             Edit
+          {{/link-to}}
+
+          {{#link-to 'rental.show' rental data-test-show-rental class='btn btn-primary'}}
+            Show
           {{/link-to}}
 
           {{delete-rental-button rental=rental}}

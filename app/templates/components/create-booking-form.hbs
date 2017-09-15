@@ -1,0 +1,24 @@
+{{#if changeset.isInvalid}}
+  <section data-test-booking-errors>
+    {{#each changeset.errors as |error|}}
+      <div class="alert alert-danger" role="alert">
+        {{error.validation}}
+      </div>
+    {{/each}}
+  </section>
+{{/if}}
+
+<form {{action 'createBooking' on='submit'}}>
+  <div class="form-group">
+    <label for="booking-client-email">Client Email</label>
+    {{input
+      data-test-booking-client-email
+      id="client-email"
+      value=(mut changeset.clientEmail)
+      class="form-control"
+    }}
+  </div>
+
+  <button data-test-create-booking type="submit" class="btn btn-primary">Create booking</button>
+  <button data-test-cancel-creation type="button" {{action 'cancelCreation'}} class="btn btn-danger">Close</button>
+</form>

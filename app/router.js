@@ -17,6 +17,9 @@ Router.map(function() {
 
   this.route('rental', { path: '/rentals/:rental_id' }, function() {
     this.route('edit');
+    this.route('show', function() {
+      this.route('createBooking');
+    });
   });
 });
 
